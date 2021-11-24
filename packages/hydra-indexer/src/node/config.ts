@@ -108,8 +108,10 @@ export function dbConfigure(): void {
   process.env.DB_PASS = process.env.TYPEORM_PASSWORD || process.env.DB_PASS
   process.env.DB_NAME = process.env.TYPEORM_DATABASE || process.env.DB_NAME
   process.env.DB_LOGGING = process.env.TYPEORM_LOGGING || process.env.DB_LOGGING
-  process.env.DB_SSL_ENABLED = process.env.TYPEORM_SSL || process.env.DB_SSL_ENABLED
-  process.env.DB_SSL_CERT = process.env.TYPEORM_SSL_CERT || process.env.DB_SSL_CERT
+  process.env.DB_SSL_ENABLED =
+    process.env.TYPEORM_SSL || process.env.DB_SSL_ENABLED
+  process.env.DB_SSL_CERT =
+    process.env.TYPEORM_SSL_CERT || process.env.DB_SSL_CERT
 
   removeUndefinedEnvs()
 
@@ -133,8 +135,11 @@ export function dbConfigure(): void {
       default: 'error',
       desc: 'Typeorm logging level',
     }),
-    DB_SSL_ENABLED: bool({ devDefault: false, desc: 'Enable SSL connection'}),
-    DB_SSL_CERT: certPath({ devDefault: '',desc: 'path to database SSL cert'}),
+    DB_SSL_ENABLED: bool({ devDefault: false, desc: 'Enable SSL connection' }),
+    DB_SSL_CERT: certPath({
+      devDefault: '',
+      desc: 'path to database SSL cert',
+    }),
   })
 }
 

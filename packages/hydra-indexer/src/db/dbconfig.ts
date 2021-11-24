@@ -17,10 +17,12 @@ const config: (name?: string) => ConnectionOptions = (name) => {
     username: conf.DB_USER,
     password: conf.DB_PASS,
     database: conf.DB_NAME,
-    ssl: conf.DB_SSL_ENABLED ? {
-      rejectUnauthorized: false,
-      cert: conf.DB_SSL_CERT,
-    } : {},
+    ssl: conf.DB_SSL_ENABLED
+      ? {
+          rejectUnauthorized: false,
+          cert: conf.DB_SSL_CERT,
+        }
+      : {},
     entities: [
       SubstrateEventEntity,
       SubstrateExtrinsicEntity,
