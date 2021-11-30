@@ -25,17 +25,16 @@ export PGPORT=$DB_PORT
 export PGUSER=$DB_USER
 export PGPASSWORD=$DB_PASS
 
-
 echo "waiting until indexer db is ready"
-wait-until 'psql --dbname="$DB_NAME" -c "select id from substrate_block limit 1" > /dev/null 2>&1'
-
+wait-until 'psql --set=sslmode=require --dbname="$DB_NAME" -c "select id from substrate_block limit 1" > /dev/null 2>&1'
 
 create-database() {
     if [ "$( psql -tAc "SELECT 1 FROM pg_database WHERE datname='"$MDB"'" )" = '1' ]
     then
         echo "found metadata database"
     else
-        createdb "$MDB" && echo "created metadata database"
+        export PGDATABASE=$DB_NAME
+        psql --set=sslmode=require -c "CREATE DATABASE $MDB" && echo "created metadata database"
     fi
 }
 wait-until 'create-database' 5
@@ -52,6 +51,5 @@ export HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES=true
 export HASURA_GRAPHQL_ENABLE_TELEMETRY=false
 export HASURA_GRAPHQL_METADATA_DATABASE_URL="postgres://$DB_USER:$DB_PASS@$DB_HOST:$DB_PORT/$MDB"
 export HYDRA_INDEXER_DB="postgres://$DB_USER:$DB_PASS@$DB_HOST:$DB_PORT/$DB_NAME"
-
 
 exec /bin/hasura-entrypoint.sh graphql-engine serve
