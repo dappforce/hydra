@@ -135,7 +135,7 @@ export function dbConfigure(): void {
       default: 'error',
       desc: 'Typeorm logging level',
     }),
-    DB_SSL_ENABLED: bool({ devDefault: false, desc: 'Enable SSL connection' }),
+    DB_SSL_ENABLED: bool({ default: false, desc: 'Enable SSL connection' }),
     DB_SSL_CERT: certPath({
       devDefault: '',
       desc: 'path to database SSL cert',
