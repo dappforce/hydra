@@ -27,7 +27,7 @@ export PGPASSWORD=$DB_PASS
 
 
 echo "waiting until indexer db is ready"
-wait-until 'psql --dbname="$DB_NAME" -c "select id from substrate_block limit 1" > /dev/null 2>&1'
+wait-until 'psql --set=sslmode=require --dbname="$DB_NAME" -c "select id from substrate_block limit 1" > /dev/null 2>&1'
 
 
 create-database() {
@@ -35,7 +35,8 @@ create-database() {
     then
         echo "found metadata database"
     else
-        createdb "$MDB" && echo "created metadata database"
+         export PGDATABASE=$DB_NAME
+         psql --set=sslmode=require -c "CREATE DATABASE $MDB" && echo "created metadata database"
     fi
 }
 wait-until 'create-database' 5
