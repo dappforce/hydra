@@ -139,7 +139,7 @@ export function dbConfigure(): void {
     }),
     DB_SSL_ENABLED: bool({ default: false, desc: 'Enable SSL connection' }),
     DB_SSL_CERT: certPath({
-      devDefault: '',
+      default: '',
       desc: 'path to database SSL cert',
     }),
   })
